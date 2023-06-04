@@ -7,6 +7,8 @@ from urllib.error import URLError
 my_fruit_list  = pandas.read_csv("https://uni-lab-files.s3.us-west-2.amazonaws.com/dabw/fruit_macros.txt")
 my_fruit_list  = my_fruit_list.set_index('Fruit')
 
+my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+
 streamlit.title('My Parents New Heathly Diner')
 
 streamlit.header('🥣 Breakfast Menu')
@@ -39,8 +41,6 @@ try:
 except URLError as e:  
   streamlit.error()
   
-
-
 streamlit.header("The fruit load list contains:")
 # Snowflake-related functions
 def get_fruit_load_list():
@@ -50,7 +50,6 @@ def get_fruit_load_list():
 
 # Add a button to load the fruit
 if steamlit.button('Get Fruit Load List'):
-  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
   my_data_rows = get_fruit_load_list()
   streamlit.dataframe(my_data_rows)
 
